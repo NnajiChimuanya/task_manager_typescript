@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tasks {
+    background-color: antiquewhite;
+    margin-top: 10px;
+}
+
+.task {
+    margin-bottom: 5px;
+ }
