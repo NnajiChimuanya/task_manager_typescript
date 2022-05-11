@@ -3,10 +3,9 @@ import Task from '../model/Task'
 import mongoose from "mongoose"
 
 try{
-    mongoose.connect("mongodb://localhost:27017/Task")
+    mongoose.connect( "mongodb+srv://Muanyachi:Muanyachi50@task.buirj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     console.log("Succeffully connected to the database")
 } catch (err) {
-    if(err) throw err
     console.log("Problem connecting to the database")
 }
 
@@ -20,7 +19,9 @@ Router.get("/", async (req: Request, res:Response) => {
 
 Router.post("/api/addTask", async (req: Request, res: Response) => {
     console.log(req.body)
-    let newTask = await new Task(req.body)
+    let newTask = await new Task({
+        name : req.body.name
+    })
     newTask.save((err) => {
         if(err) throw err
         res.redirect("/")
@@ -35,5 +36,32 @@ Router.get("/api/getTask/:id", async (req: Request, res: Response) => {
         if(error) throw error
     }
 })
+
+Router.delete("/api/deleteTask/:id", async(req: Request, res: Response) => {
+    try {
+        await Task.findByIdAndDelete({_id : req.params.id})
+        console.log(`Deleted task by Id : ${req.params.id}`)
+    } catch (error) {
+        if(error) throw error
+    }
+
+    res.redirect("/")
+} )
+
+Router.patch("/api/updateTask/:id", async(req: Request, res: Response) => {
+    let mm = false
+    if(req.body.completed) {
+         mm = true
+    }
+
+    try {
+        await Task.findByIdAndUpdate({_id : req.params.id}, {name : req.body.name, completed : mm} )
+        console.log(`Updatated task by Id : ${req.params.id}`)
+    } catch (error) {
+        if(error) throw error
+    }
+
+    res.redirect("/")
+} )
 
 export default Router

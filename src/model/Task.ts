@@ -4,7 +4,10 @@ import ITask from "../interface/Itask"
 
 const taskSchema: Schema = new Schema({
     name : String,
-    completed : Boolean
+    completed : {
+        type : Boolean,
+        default : false
+    }
 })
 
 const Task = model<ITask>("Task", taskSchema)
