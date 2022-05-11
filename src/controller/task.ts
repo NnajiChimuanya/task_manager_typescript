@@ -27,4 +27,13 @@ Router.post("/api/addTask", async (req: Request, res: Response) => {
     })
 })
 
+Router.get("/api/getTask/:id", async (req: Request, res: Response) => {
+    try {
+        const data = await Task.findById({_id : req.params.id})
+        res.render("task", {task : data})
+    } catch (error) {
+        if(error) throw error
+    }
+})
+
 export default Router
